@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>FreeTON Rewards</title>
+  <style>
+    :root{
+      --bg1:#070b16;
+      --bg2:#120a2a;
+      --glass:rgba(255,255,255,.10);
+      --stroke:rgba(255,255,255,.14);
+      --txt:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.70);
+      --muted2:rgba(255,255,255,.55);
+      --cyan:#22d3ee;
+      --pink:#fb7185;
+      --violet:#818cf8;
+      --green:#34d399;
+      --yellow:#fbbf24;
+      --red:#fb7185;
+      --shadow: 0 18px 50px rgba(0,0,0,.35);
+      --radius2: 28px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      color:var(--txt);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Arabic", Arial;
+      background: radial-gradient(1200px 600px at 50% -10%, rgba(34,211,238,.18), transparent 60%),
+                  radial-gradient(900px 500px at 10% 30%, rgba(251,113,133,.16), transparent 55%),
+                  radial-gradient(900px 500px at 90% 40%, rgba(129,140,248,.16), transparent 60%),
+                  linear-gradient(180deg, var(--bg2), var(--bg1));
+      min-height:100vh;
+      overflow-x:hidden;
+      padding-bottom: 96px;
+    }
+    .particles{position:fixed; inset:0; pointer-events:none; opacity:.55; z-index:0;}
+    .dot{position:absolute; width:4px;height:4px; border-radius:999px; background:rgba(255,255,255,.75);
+      box-shadow:0 0 18px rgba(255,255,255,.22); animation: floaty 6s ease-in-out infinite;}
+    @keyframes floaty{0%{transform:translateY(0);opacity:.45}50%{transform:translateY(-14px);opacity:.85}100%{transform:translateY(0);opacity:.45}}
+    .wrap{position:relative; z-index:1; max-width:520px; margin:0 auto; padding:14px 14px 0;}
+    .header{display:flex; align-items:center; justify-content:space-between; gap:10px; padding-top:8px;}
+    .brand .t1{font-size:13px; opacity:.75}
+    .brand .t2{font-size:22px; font-weight:800; letter-spacing:.4px}
+    .pill{display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:999px; background:var(--glass);
+      border:1px solid var(--stroke); backdrop-filter: blur(14px); box-shadow:0 0 22px rgba(34,211,238,.10); white-space:nowrap;}
+    .pill b{font-variant-numeric: tabular-nums}
+    .pill small{opacity:.72}
+    .card{background:var(--glass); border:1px solid var(--stroke); border-radius:var(--radius2); backdrop-filter: blur(18px);
+      box-shadow: var(--shadow); padding:16px;}
+    .grid{display:grid; gap:12px; margin-top:14px;}
+    .row{display:flex; align-items:center; justify-content:space-between; gap:10px}
+    .muted{opacity:.72}
+    .tiny{font-size:12px}
+    .h1{font-size:18px;font-weight:800}
+    .btn{height:48px; width:100%; border-radius:18px; border:1px solid rgba(255,255,255,.16);
+      background: linear-gradient(90deg, rgba(34,211,238,.85), rgba(251,113,133,.75), rgba(129,140,248,.85));
+      color:#081022; font-weight:900; letter-spacing:.3px; box-shadow:0 0 34px rgba(129,140,248,.18);
+      cursor:pointer; transition: transform .08s ease, filter .2s ease;}
+    .btn:active{transform:scale(.99)}
+    .btn.secondary{background: rgba(255,255,255,.10); color: var(--txt); box-shadow:none;}
+    .split{display:grid; grid-template-columns: 1.1fr .9fr; gap:12px}
+    .ring{width:120px;height:120px; position:relative; margin-inline-start:auto;}
+    .ring svg{width:120px;height:120px; transform: rotate(-90deg);}
+    .ring .center{position:absolute; inset:0; display:grid; place-items:center; text-align:center; gap:2px;}
+    .ring .time{font-weight:900; font-size:20px; font-variant-numeric: tabular-nums;}
+    .ring .label{font-size:11px; opacity:.7}
+    .bar{height:10px; background: rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.12);
+      border-radius:999px; overflow:hidden;}
+    .bar > i{display:block; height:100%; width:0%; background: rgba(255,255,255,.78); box-shadow:0 0 18px rgba(255,255,255,.18);}
+    .nav{position:fixed; left:0; right:0; bottom:0; padding:10px 12px calc(10px + env(safe-area-inset-bottom)); z-index:5;}
+    .nav .shell{max-width:520px; margin:0 auto; display:grid; grid-template-columns: repeat(4, 1fr); gap:10px; padding:10px;
+      border-radius:26px; background: rgba(0,0,0,.28); border:1px solid rgba(255,255,255,.12); backdrop-filter: blur(16px);}
+    .tab{height:52px; border-radius:20px; border:1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.08);
+      color: var(--txt); font-weight:800; cursor:pointer; transition: background .15s ease, transform .1s ease;
+      display:flex; align-items:center; justify-content:center; font-size:12px;}
+    .tab.active{background: rgba(255,255,255,.14); box-shadow:0 0 22px rgba(255,255,255,.08);}
+    .tab:active{transform:scale(.99)}
+    .toast{position:fixed; top:12px; left:0; right:0; z-index:12; display:grid; place-items:center; pointer-events:none;}
+    .toast > div{max-width:520px; width: calc(100% - 24px); padding:12px 14px; border-radius:20px;
+      background: rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.16); backdrop-filter: blur(14px);
+      box-shadow:0 0 28px rgba(0,0,0,.28); display:none;}
+    .toast.show > div{display:block;}
+  </style>
+</head>
+<body>
+  <div class="particles" id="particles"></div>
+  <div class="toast" id="toast"><div id="toastText"></div></div>
+
+  <div class="wrap">
+    <div class="header">
+      <div class="brand">
+        <div class="t1">Rewards</div>
+        <div class="t2">FreeTON</div>
+      </div>
+      <div class="pill">
+        <small>Balance</small>
+        <b id="balance">0.000000</b>
+        <small>TON</small>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card" id="collectCard">
+        <div class="row">
+          <div>
+            <div class="h1">Collect Session</div>
+            <div class="tiny muted">ابدأ جلسة → (إعلان) → عدّاد → استلم المكافأة</div>
+          </div>
+          <div class="ring" aria-label="timer">
+            <svg viewBox="0 0 40 40">
+              <circle cx="20" cy="20" r="16" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="4"></circle>
+              <circle id="ringProg" cx="20" cy="20" r="16" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="4"
+                stroke-dasharray="100" stroke-dashoffset="100" stroke-linecap="round"></circle>
+            </svg>
+            <div class="center">
+              <div class="time" id="time">00:10</div>
+              <div class="label">Session</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bar" style="margin-top:12px"><i id="barProg"></i></div>
+
+        <div class="split" style="margin-top:12px">
+          <button class="btn" id="startBtn">Start Session</button>
+          <button class="btn secondary" id="claimBtn" disabled>Claim</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="row">
+          <div>
+            <div class="h1">Tip</div>
+            <div class="tiny muted">دي واجهة شكلية حالياً. الخطوة الجاية: صفحات Tasks / Referrals / Withdraw.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <div class="shell">
+      <button class="tab active" data-tab="collect">Collect</button>
+      <button class="tab" data-tab="tasks">Tasks</button>
+      <button class="tab" data-tab="ref">Referrals</button>
+      <button class="tab" data-tab="wd">Withdraw</button>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      const el = document.getElementById("particles");
+      const n = 22;
+      for(let i=0;i<n;i++){
+        const d = document.createElement("span");
+        d.className = "dot";
+        d.style.left = (Math.random()*100) + "%";
+        d.style.top = (Math.random()*100) + "%";
+        d.style.width = d.style.height = (2 + Math.random()*4) + "px";
+        d.style.animationDelay = (Math.random()*4) + "s";
+        d.style.animationDuration = (4 + Math.random()*6) + "s";
+        el.appendChild(d);
+      }
+    })();
+
+    const total = 10;
+    let left = total;
+    let running = false;
+    const timeEl = document.getElementById("time");
+    const ring = document.getElementById("ringProg");
+    const bar = document.getElementById("barProg");
+    const startBtn = document.getElementById("startBtn");
+    const claimBtn = document.getElementById("claimBtn");
+    const balanceEl = document.getElementById("balance");
+    let balance = 0.000000;
+
+    function fmt(sec){
+      const m = String(Math.floor(sec/60)).padStart(2,"0");
+      const s = String(sec%60).padStart(2,"0");
+      return m+":"+s;
+    }
+
+    function setProg(p){
+      const pct = Math.max(0, Math.min(1, p));
+      ring.setAttribute("stroke-dashoffset", String(100 - pct*100));
+      bar.style.width = (pct*100) + "%";
+    }
+
+    function toast(msg){
+      const t = document.getElementById("toast");
+      const tx = document.getElementById("toastText");
+      tx.textContent = msg;
+      t.classList.add("show");
+      setTimeout(()=>t.classList.remove("show"), 2200);
+    }
+
+    function tick(){
+      if(!running) return;
+      left--;
+      timeEl.textContent = fmt(left);
+      setProg((total-left)/total);
+      if(left<=0){
+        running = false;
+        claimBtn.disabled = false;
+        startBtn.disabled = true;
+        toast("Session finished! يمكنك الاستلام الآن.");
+      } else {
+        setTimeout(tick, 1000);
+      }
+    }
+
+    startBtn.addEventListener("click", ()=>{
+      if(running) return;
+      running = true;
+      left = total;
+      claimBtn.disabled = true;
+      startBtn.disabled = true;
+      timeEl.textContent = fmt(left);
+      setProg(0);
+      toast("Session started (Demo 10s)");
+      setTimeout(tick, 1000);
+    });
+
+    claimBtn.addEventListener("click", ()=>{
+      if(running) return;
+      balance = +(balance + 0.001).toFixed(6);
+      balanceEl.textContent = balance.toFixed(6);
+      claimBtn.disabled = true;
+      startBtn.disabled = false;
+      left = total;
+      timeEl.textContent = fmt(left);
+      setProg(0);
+      toast("+0.001 TON added (Demo)");
+    });
+
+    document.querySelectorAll(".tab").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+        btn.classList.add("active");
+        const t = btn.getAttribute("data-tab");
+        if(t !== "collect"){
+          toast("الصفحة دي هنبنيها في الخطوة الجاية ✅");
+        }
+      });
+    });
+
+    timeEl.textContent = fmt(left);
+    setProg(0);
+  </script>
+</body>
+</html>

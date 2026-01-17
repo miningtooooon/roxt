@@ -2,6 +2,6 @@
   "name": "miniapp-ui",
   "private": true,
   "scripts": {
-    "build": "mkdir -p dist && echo '<!doctype html><html><body><h1>Rewards Mini App</h1><p>Telegram WebApp UI</p></body></html>' > dist/index.html"
+    "build": "mkdir -p dist && echo build_ok > dist/.built"
   }
 }

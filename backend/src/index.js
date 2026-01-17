@@ -13,6 +13,8 @@ app.use(express.json());
 
 app.get("/health", (req,res)=>res.json({ok:true}));
 
+app.get("/", (req,res)=>res.redirect("/app"));
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
