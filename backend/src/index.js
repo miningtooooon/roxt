@@ -2,39 +2,28 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import dotenv from "dotenv";
-import { connectDB } from "./db.js";
-
-import { adminAuthRouter } from "./routes/adminAuth.js";
-import { adminSettingsRouter } from "./routes/adminSettings.js";
-import { adminStatsRouter } from "./routes/adminStats.js";
-import { adminTasksRouter } from "./routes/adminTasks.js";
-import { adminWithdrawalsRouter } from "./routes/adminWithdrawals.js";
-import { userRouter } from "./routes/user.js";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
-
 const app = express();
-
 app.use(helmet());
-app.use(express.json({ limit: "1mb" }));
-app.use(
-  cors({
-    origin: process.env.CORS_ORIGINS?.split(",") ?? ["*"],
-    credentials: false
-  })
-);
+app.use(cors());
+app.use(express.json());
 
-app.get("/health", (_, res) => res.json({ ok: true }));
+app.get("/health", (req,res)=>res.json({ok:true}));
 
-app.use("/admin/auth", adminAuthRouter);
-app.use("/admin/settings", adminSettingsRouter);
-app.use("/admin/stats", adminStatsRouter);
-app.use("/admin/tasks", adminTasksRouter);
-app.use("/admin/withdrawals", adminWithdrawalsRouter);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-app.use("/api", userRouter);
+const adminDist = path.join(__dirname, "../../admin/dist");
+const appDist = path.join(__dirname, "../../miniapp/dist");
+
+app.use("/admin", express.static(adminDist));
+app.get("/admin/*", (req,res)=>res.sendFile(path.join(adminDist, "index.html")));
+
+app.use("/app", express.static(appDist));
+app.get("/app/*", (req,res)=>res.sendFile(path.join(appDist, "index.html")));
 
 const PORT = process.env.PORT || 3000;
-await connectDB(process.env.MONGODB_URI);
-
-app.listen(PORT, () => console.log(`API running on :${PORT}`));
+app.listen(PORT, ()=>console.log("Server running on", PORT));
